@@ -22,21 +22,21 @@ loan_costs = [500, 600, 200, 1000, 450]
 # Print the number of loans from the list
 # YOUR CODE HERE!
 loan_count = len(loan_costs)
-print(f"The total number of loans is: {loan_count}.")
+print(f"The total number of loans is: {loan_count}")
 
 # What is the total of all loans?
 # @TODO: Use the `sum` function to calculate the total of all loans in the list.
 # Print the total value of the loans
 # YOUR CODE HERE!
 loans_sum = sum(loan_costs)
-print(f"The total value of the loans is ${loans_sum}.")
+print(f"The total value of the loans is: ${loans_sum}")
 
 # What is the average loan amount from the list?
 # @TODO: Using the sum of all loans and the total number of loans, calculate the average loan price.
 # Print the average loan amount
 # YOUR CODE HERE!
 average_loan_value = loans_sum / loan_count
-print(f"The average loan value is ${average_loan_value}.")
+print(f"The average loan value is: ${average_loan_value}")
 
 ## create a line break between sections
 print("----------------- Section 2 ------------------")
@@ -76,9 +76,13 @@ loan = {
 # Print each variable.
 # YOUR CODE HERE!
 ## use capitalized variables to keep them contained within this section
+Loan_Cost = loan.get("loan_price")
 Future_Value = loan.get("future_value")
 Remaining_Months = loan.get("remaining_months")
-print(f"The future value is ${Future_Value} and there are {Remaining_Months} months remaining on the loan.")
+
+## print the loan parameters
+print(f"Cost to buy the loan is $", Loan_Cost)
+print(f"The future value is: ${Future_Value} and there are {Remaining_Months} months remaining on the loan.")
 
 
 # @TODO: Use the formula for Present Value to calculate a "fair value" of the loan.
@@ -91,7 +95,7 @@ print(f"The future value is ${Future_Value} and there are {Remaining_Months} mon
 Discount_Rate = 0.20
 ## calculate the Fair Value of the loan and print this 
 Fair_Value = Future_Value / (1 + Discount_Rate/12) ** Remaining_Months
-print(f"The calculated fair value is ${Fair_Value:.2f}")
+print(f"The calculated fair value is: ${Fair_Value:.2f}")
 
 # If Present Value represents what the loan is really worth, does it make sense to buy the loan at its cost?
 # @TODO: Write a conditional statement (an if-else statement) to decide if the present value represents the loan's fair value.
@@ -99,10 +103,11 @@ print(f"The calculated fair value is ${Fair_Value:.2f}")
 #    Else, the present value of the loan is less than the loan cost, then print a message that says that the loan is too expensive and not worth the price.
 # YOUR CODE HERE!
 ## determine whether the loan is worth it or not and display the decision 
-if Fair_Value >= Future_Value:
-    print("It's worth it!")
+## if the future value is more than the current value, then it is worth it
+if Fair_Value >= Loan_Cost:
+    print("It's worth it, BUY IT!")
 else:
-    print("This is not worth it, given the asked price and interest rates.")
+    print("This is not worth it, DON'T buy it!")
 
 ## create a line break between sections
 print("----------------- Section 3 ------------------")
@@ -131,20 +136,32 @@ new_loan = {
 #    The function should return the `present_value` for the loan.
 # YOUR CODE HERE!
 ## define the function to do the calcs. Use lower case letters to differentiate it from previous calcs.
-def pv(future_value, annual_discount_rate, remaining_months):
+def calculate_present_value(future_value, remaining_months, annual_discount_rate):
     present_value = future_value / (1 + annual_discount_rate/12) ** remaining_months
     return present_value
 
 # @TODO: Use the function to calculate the present value of the new loan given below.
 #    Use an `annual_discount_rate` of 0.2 for this new loan calculation.
 # YOUR CODE HERE!
-## scrape the data from the new_loan dictionary and assign an annual discount rate
-fv = new_loan.get("future_value")
-rm = new_loan.get("remaining_months") 
-annual_discount_rate = 0.2
+## call the function with the obtained inputs and display the present value
+loan_cost = new_loan.get("loan_price")
+annual_discount_rate = 0.20
+present_value = calculate_present_value(
+    new_loan["future_value"],
+    new_loan["remaining_months"],
+    annual_discount_rate, 
+)
 
-## call the function with the obtained inputs and display the result
-print(f"The present value of the loan is: ${pv(fv, annual_discount_rate, rm):.2f}")
+## user can visually compare the present value to the future value to verify evaluation
+print(f"The present value of the loan is: ${present_value:.2f}")
+print("Cost to buy the loan is: $", loan_cost)
+
+## although not requested, evaluate whether the loan makes sense
+## if the future value is more than what you're paying now, it is worth it
+if present_value >= loan_cost:
+    print("It's worth it, BUY IT!")
+else:
+    print("Not worth it, DON'T do it!")
 
 ## create a line break between sections
 print("----------------- Section 4 ------------------")
